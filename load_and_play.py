@@ -16,7 +16,7 @@ device = "cpu"
 if torch.cuda.is_available():
     device = "cpu"
 
-path = "D:\\models\\GTA_Self_Drive\\RawImage\\"
+path = "path_to_models"
 agent = model.GRU_Car(device=device).to(device=device)
 agent.load_state_dict(torch.load(path+"Model Saving Current Epoch 45.pt", weights_only=False))
 agent.eval()
@@ -41,8 +41,8 @@ with torch.no_grad():
 
         ctrl.control_dict[np.argmax(out)]()
 
-        #frameComb = cv.resize(in_, (960, 270*2))
-        #cv.imshow("COD AI WINDOW", frameComb)
+        frameComb = cv.resize(in_, (960, 270*2))
+        cv.imshow("COD AI WINDOW", frameComb)
         if cv.waitKey(1) & 0xff == ord('q'):
             cv.destroyAllWindows()
             break
