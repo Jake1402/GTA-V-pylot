@@ -3,13 +3,18 @@ import torch.nn as nn
 import torchvision
 import numpy as np
 
-class GRU_Car(nn.Module):
+class CNN_Car(nn.Module):
     def __init__(self, device="cuda"):
-        super(GRU_Car, self).__init__()
-
+        super(CNN_Car, self).__init__()
         self.use_device = device
-
-        self.ConvLayers = nn.Sequential(
+        
+        '''
+        Our current Gen 1 model is a linear model that has no "memory" a future version may
+        consist of some form of RNN network or could feature stacked image with positional 
+        encoding so the model can learn the sequence of events. I think my Gen 2 model 
+        however will consist of residual connections.
+        '''
+        self.CNN_Model = nn.Sequential(
             nn.Conv2d(in_channels=1, out_channels=32, kernel_size=5, stride=1, padding=1),
             nn.BatchNorm2d(num_features=32),
             nn.ReLU(),
@@ -35,14 +40,8 @@ class GRU_Car(nn.Module):
             nn.ReLU(),
             nn.Dropout(0.4),
             nn.Linear(in_features=4096, out_features=6),
-            #nn.Softmax()
         )
 
     def forward(self, x):
-        self.conLayers = self.ConvLayers(x)
-        #self.gru_output, self.h0 = self.gru_unit(self.conLayers, self.h0)
-        #self.output = self.LinearSoftmax(self.gru_output)
-        return nn.functional.log_softmax(self.conLayers, dim=1)
-
-    def resetParams(self):
-        self.h0 = torch.zeros(5, 9).to(self.use_device)
+        self.model_logits = self.CNN_Model(x)
+        return nn.functional.log_softmax(self.model_logits, dim=1)
