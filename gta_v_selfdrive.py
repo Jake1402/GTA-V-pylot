@@ -21,22 +21,30 @@ import random
 GTA_DS = []
 start = 0
 
-for files in range(1, 97): #97
-    holding = []
-    a = []
+'''
+This slice of code below belongs in its own class.
+It's super effecient. Before this ram usage was at 120GB after
+it goes to 10GB meaning it could store all variable on a GPU
+with at least 16GB of VRAM.
+'''
+
+for files in range(1, 97): #Iterate through all files
+    holding = []    #hold all actions after array is fully read
+    a = []    #create lists each contatining a frame with its action
     d = []
     w = []
     s = []
     wa = []
     wd = []
     print(f"Reading <{files}>")
-    GTA_Train = np.load(f"./dataset/training_data ({files}).npy")
+    GTA_Train = np.load(f"./dataset/training_data ({files}).npy")    #load file
 
-    for pointer in range(len(GTA_Train)):
-        if GTA_Train[pointer][1] is None:
+    for pointer in range(len(GTA_Train)):    #iterate through the array.
+        
+        if GTA_Train[pointer][1] is None:    #skip over is action is None/undef
             continue
 
-        if np.array(GTA_Train[pointer][1]).argmax() == 0:
+        if np.array(GTA_Train[pointer][1]).argmax() == 0:    #append corresponding actions to list
             w.append(GTA_Train[pointer])
 
         if np.array(GTA_Train[pointer][1]).argmax() == 1:
@@ -54,14 +62,14 @@ for files in range(1, 97): #97
         if np.array(GTA_Train[pointer][1]).argmax() == 5:
             wd.append(GTA_Train[pointer])
 
-    w = w[:len(wa)][:len(wd)]
+    w = w[:len(wa)][:len(wd)]    #slice the lists down so dataset is balanced.
     a = a[:len(w)]
     d = d[:len(w)]
     s = s[:len(w)]
     wa = wa[:len(w)]
     wd = wd[:len(w)]
-    holding = holding + w + s + wa + wd + a + d
-    del w
+    holding = holding + w + s + wa + wd + a + d    #append all lists to holding array.
+    del w    #delete all variables
     del a
     del d
     del s
@@ -71,8 +79,10 @@ for files in range(1, 97): #97
         #print(str(pointer) + " - " + str(start))
         GTA_Processed = get_screen.processImageToGSFormatNoCanny(holding[pointer][0])
         GTA_Processed = torch.tensor(GTA_Processed).to(torch.float32)
-        GTA_DS.append([np.divide(GTA_Processed, 255.0), np.array(holding[pointer][1]).argmax()])
-    del holding
+        GTA_DS.append([np.divide(GTA_Processed, 255.0), np.array(holding[pointer][1]).argmax()])    #convert to pytorch varables and append to a numpy list
+    del holding    #delete holding
+
+'''^Repeat until all files read^'''
 
 
 batch_size = 64
@@ -131,7 +141,7 @@ def test_loop(model, test_dataloader, loss_fn, device="cuda"):
     print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>6f} \n")
     return test_loss
 
-path = "D:\\models\\GTA_Self_Drive\\RawImage\\"
+path = "path_to_save_models"
 epochs = 75
 for i in range(epochs):
     initTime = time.time()
@@ -149,10 +159,17 @@ time.sleep(5)
 del dataloader
 del dataset
 
-torch.save(agent.state_dict(), path+f"EPOCH{epochs}, BATCH{batch_size}, LR{alpha}, STEP, SGD095, CANNY.pt")
+'''
+Save models after training so nothing is lost
+'''
+torch.save(agent.state_dict(), path+f"EPOCH{epochs}, BATCH{batch_size}, LR{alpha}.pt")
 input("Training Complete")
 time.sleep(5)
 counts = 0
+'''
+run the model in the GTA V enviroment. It will press your keys so ensure you're
+in GTA V or it will spam key presses.
+'''
 while True:
     counts += 1
     X = get_screen.grabScreen()
