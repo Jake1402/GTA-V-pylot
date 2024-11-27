@@ -9,7 +9,7 @@ pip install -r requirements.txt
 This will begin to install all the necessary libraries in order to successfully run GTA-V-Pylot. I've also included a simple model that has marginal success on some areas of the map. Specifically the coastal highway on the west side of the map. The model seems to do alright on highways but can struggle when driving in the city. 
 
 ## Running the model
-To run the model simply run [[load_and_play.py]] if you want to load and run your own model or [[./model/load_example.py]] if you'd like to run the pretrained example model.
+To run the model simply run (load_and_play.py) if you want to load and run your own model or (./model/load_example.py) if you'd like to run the pretrained example model.
 
 ## Training your own model
 
