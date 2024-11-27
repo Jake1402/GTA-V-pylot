@@ -84,7 +84,6 @@ for files in range(1, 97): #Iterate through all files
 
 '''^Repeat until all files read^'''
 
-
 batch_size = 64
 dataset = CustDataset(GTA_DS, window_size=1)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
@@ -93,6 +92,9 @@ print(f"Number of items in dataset - {len(GTA_DS)}")
 del GTA_DS
 del GTA_Train
 
+#
+#Setting up hyper parameters and check cuda availability
+#
 print(f"Is GPU available for use - {torch.cuda.is_available()}")
 device = "cpu"
 if torch.cuda.is_available():
@@ -103,8 +105,9 @@ loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(agent.parameters(),lr=alpha, momentum=0.95)
 step_lr = torch.optim.lr_scheduler.StepLR(optimizer=optimizer, step_size=20, gamma=0.75)
 
-
-
+'''
+Testing and train functions
+'''
 def train_epoch(model, dataloader, optimizer, loss_fn, device="cuda"):
     model.train()
     iteration = 0
