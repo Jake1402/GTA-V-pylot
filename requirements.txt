@@ -1,0 +1,6 @@
+torch==2.4.1
+numpy==2.0.1
+opencv-python==4.10.0
+pyautogui==0.9.54
+pillow==10.4.0
+pynput
