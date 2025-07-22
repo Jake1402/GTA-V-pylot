@@ -37,7 +37,7 @@ LR Scheduler - stepped every 20 epochs with a drop of 0.75
 I found these values worked quite well, unfortunately I noticed that Adam could be unstable but I did get some good results with it. Perhaps and most likely it was my fault for improperly picking the write hyper parameters. Training for me took between 1.5 to 6 hours depending on what model I decided to create and how much data I wanted to use. My system specs are,
 ```
 CPU - AMD Ryzen 5 5600X
-GPU - NVidia RTX 3050 8GB
+GPU - NVidia RTX 3090 24GB
 RAM - 32GB DDR4 3200MHz
 STORAGE - ADATA SX8200 
 ```
