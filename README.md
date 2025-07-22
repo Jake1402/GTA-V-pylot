@@ -1,3 +1,4 @@
+# GTA V Pylot
 GTA V Pylot is a convolutional model who's only objective is to drive a car in the GTA V world. To do this I used the [self-driving-GTA-V](https://huggingface.co/datasets/sartajbhuvaji/self-driving-GTA-V) by [Sartaj](https://github.com/SartajBhuvaji). An important limitation of this car is that a lot of training data had to be removed in order to balance the dataset. I plan to correct this issue in future iteration by changing how I decide to balance the dataset. Another important limitation is the lack of memory the network has, the network does not feature any frame stacking and as a result only acts on a single image at a time. The network is a feed forward with no recurrent connections.
 
 ## How to install
